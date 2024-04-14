@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="vbox">
+      <p>try</p>
+    </div>
+
+    <script type="module">
+      // setTimeout(() => {
+      //     // console.log('2s back');
+      //     const constraints = { audio: true };
+      //     navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+      //         console.log(stream);
+      //     })
+      // }, 2000);
+
+      //   const canvasdom = new VoiceCanvas();
+      // 开启声音通道
+      //   const startVoicePost = () => {
+      //     if (document.querySelector(".visualizer")) {
+      //       canvasdom.delDom();
+      //     } else {
+      //       canvasdom.init();
+      //     }
+      //   };
+
+      const recongin = new createSpeechRecognition();
+      function createSpeechRecognition() {
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        // var SpeechRecognition = webkitSpeechRecognition;
+        console.log("=============", SpeechRecognition);
+        this.recognition = new SpeechRecognition();
+        console.log("=============", this.recognition);
+        this.wordsindex = 0;
+        this.recognition.continuous = true;
+        this.recognition.lang = "zh-CN";
+        this.recognition.interimResults = false;
+        // this.recognition.interimResults = true;
+        this.recognition.maxAlternatives = 1;
+        // this.recognition.addEventListener("result", (e) => {
+        //   //   this.wirteWordsCtx(e.results[this.wordsindex][0].transcript);
+        //   //   this.wordsindex++;
+        //   console.log(e.results);
+        // });
+
+        this.recognition.onresult = (event) => {
+          const result = event.results[event.results.length - 1];
+          // console.log(result[0].transcript);
+          const voiceWords = result[0].transcript;
+          // if (voiceWords.) {
+
+          // }
+          console.log(voiceWords);
+        };
+      }
+
+      createSpeechRecognition.prototype.recordstart = function () {
+        console.log("开始语音识别");
+        this.recognition.start();
+      };
+      createSpeechRecognition.prototype.wirteWordsCtx = function (words) {
+        console.log(words);
+        const dom = document.querySelector(".word");
+        dom.innerHTML += words + "<br />";
+        if (handleVoiceWords(words)) {
+          dom.innerHTML +=
+            "<span style='font-size:10px;color:gray'>触发关键词,已跳转到对应页面。</span>" +
+            "<br />";
+        }
+      };
+      createSpeechRecognition.prototype.recordfinish = function () {
+        console.log("结束语音识别");
+        this.wordsindex = 0;
+        this.recognition.stop();
+      };
+      recongin.recordstart();
+    </script>
+  </body>
+</html>
