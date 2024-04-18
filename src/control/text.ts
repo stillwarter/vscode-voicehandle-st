@@ -28,7 +28,28 @@ const hidePage = () => {
   editor.hide();
 };
 
-export { inserText, inserText_newLine, hidePage };
+/* 添加注释（目前只支持js） */
+const insertNote = (words: any) => {
+  const editor: any = vscode.window.activeTextEditor;
+  const oldCursorPosition = editor.selection.start;
+  editor.edit((editBuilder: any) => {
+    editBuilder.insert(oldCursorPosition, "// " + words);
+  });
+};
+
+/* 添加st-keywords */
+const insertKeySt = (words: any) => {
+  const editor: any = vscode.window.activeTextEditor;
+  const oldCursorPosition = editor.selection.start;
+  editor.edit((editBuilder: any) => {
+    editBuilder.insert(oldCursorPosition, "/* " + "st-" + words + " */");
+  });
+};
+
+/* 搜索文件 */
+
+
+export { inserText, inserText_newLine, hidePage, insertNote, insertKeySt };
 // activeEditor.edit((editBuilder) => {
 //   // 插入
 //   editBuilder.insert(new vscode.Position(0, 0), "Hello, world!");

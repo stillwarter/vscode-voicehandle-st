@@ -7,6 +7,16 @@ export function activate(context: vscode.ExtensionContext) {
     // vscode.window.showInformationMessage("Hello World from voicepupter!");
     // 初始化puperteer
     initvoice();
+
+    // const tt: any = vscode.workspace;
+    // const vwork = vscode.workspace.findFiles("12").then((res) => {
+    //   console.log(res);
+    // });
+    // const vwork = tt.findFiles("?12").then((res: any) => {
+    //   console.log(res);
+    // });
+
+    // console.log(tt.findTextInFiles);
   });
 }
 

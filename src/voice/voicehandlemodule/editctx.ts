@@ -1,10 +1,15 @@
-import { inserText, inserText_newLine } from "../../control/text";
+import {
+  inserText,
+  inserText_newLine,
+  insertNote,
+  insertKeySt,
+} from "../../control/text";
 /**
  * 语音编辑文件内容
  */
 
 /* 语音文本内容关键词检测 */
-const ctxKeyWords = ["插入", "换行"];
+const ctxKeyWords = ["插入", "换行", "注释", "标记"];
 
 function chectCtxKeyWords(word: string) {
   let re;
@@ -33,6 +38,22 @@ const editorCtxCheck = (word: string) => {
     return {
       finish: true,
       keyvalue: "换行",
+    };
+  }
+
+  if (chectCtxKeyWords(word) === "注释") {
+    insertNote(word.replace("注释", "").replace("。", ""));
+    return {
+      finish: true,
+      keyvalue: "注释",
+    };
+  }
+
+  if (chectCtxKeyWords(word) === "标记") {
+    insertKeySt(word.replace("标记", "").replace("。", ""));
+    return {
+      finish: true,
+      keyvalue: "标记",
     };
   }
 };
