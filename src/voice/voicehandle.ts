@@ -15,7 +15,7 @@ const voiceCheckCenter = (word: string) => {
   for (const item of voiceCheckBeforArr) {
     const sign: any = item(word);
     if (sign) {
-      vscode.window.showInformationMessage(sign.keyvalue + "指令已运行完毕。");
+      vscode.window.showInformationMessage(sign.keyvalue + "指令已运行完毕!");
       break;
     }
   }
