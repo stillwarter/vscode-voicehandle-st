@@ -30,12 +30,27 @@ exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
 const base_1 = __importDefault(require("./voice/base"));
 function activate(context) {
-    let disposable = vscode.commands.registerCommand("openpush", () => {
+    let disposable = vscode.commands.registerCommand("openpush", async () => {
         // const editor: any = vscode.window.activeTextEditor;
         // editor.hide();
         // vscode.window.showInformationMessage("Hello World from voicepupter!");
         // 初始化puperteer
         (0, base_1.default)();
+        // const input = await vscode.window.showInputBox();
+        // console.log(input);
+        // vscode.commands.executeCommand("workbench.action.findInFiles", {
+        //   query: 'test',
+        //   isRegex: true,
+        //   triggerSearch: true,
+        // } as IFindInFilesArgs);
+        // const tt: any = vscode.workspace;
+        // const vwork = vscode.workspace.findFiles("12").then((res) => {
+        //   console.log(res);
+        // });
+        // const vwork = tt.findFiles("?12").then((res: any) => {
+        //   console.log(res);
+        // });
+        // console.log(tt.findTextInFiles);
     });
 }
 exports.activate = activate;

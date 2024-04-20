@@ -1,10 +1,11 @@
 import editorSelectionCheck from "./voicehandlemodule/select";
 import editorCtxCheck from "./voicehandlemodule/editctx";
+import searchCtxCheck from "./voicehandlemodule/search";
 import * as vscode from "vscode";
 /**
  * 语音检测预备流程集合
  */
-const voiceCheckBeforArr = [editorSelectionCheck, editorCtxCheck];
+const voiceCheckBeforArr = [searchCtxCheck,editorSelectionCheck, editorCtxCheck];
 
 /**
  * 语音输入检测中心

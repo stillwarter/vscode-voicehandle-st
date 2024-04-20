@@ -26,7 +26,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hidePage = exports.inserText_newLine = exports.inserText = void 0;
+exports.insertKeySt = exports.insertNote = exports.hidePage = exports.inserText_newLine = exports.inserText = void 0;
 const vscode = __importStar(require("vscode"));
 /* 光标后插入 */
 const inserText = (words) => {
@@ -52,6 +52,24 @@ const hidePage = () => {
     editor.hide();
 };
 exports.hidePage = hidePage;
+/* 添加注释（目前只支持js） */
+const insertNote = (words) => {
+    const editor = vscode.window.activeTextEditor;
+    const oldCursorPosition = editor.selection.start;
+    editor.edit((editBuilder) => {
+        editBuilder.insert(oldCursorPosition, "// " + words);
+    });
+};
+exports.insertNote = insertNote;
+/* 添加st-keywords */
+const insertKeySt = (words) => {
+    const editor = vscode.window.activeTextEditor;
+    const oldCursorPosition = editor.selection.start;
+    editor.edit((editBuilder) => {
+        editBuilder.insert(oldCursorPosition, "/* " + "st-" + words + " */");
+    });
+};
+exports.insertKeySt = insertKeySt;
 // activeEditor.edit((editBuilder) => {
 //   // 插入
 //   editBuilder.insert(new vscode.Position(0, 0), "Hello, world!");
