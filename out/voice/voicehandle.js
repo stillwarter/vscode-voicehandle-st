@@ -26,20 +26,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const select_1 = __importDefault(require("./voicehandlemodule/select"));
+const vscode = __importStar(require("vscode"));
+/* 单句检测 */
 const editctx_1 = __importDefault(require("./voicehandlemodule/editctx"));
 const search_1 = __importDefault(require("./voicehandlemodule/search"));
-const vscode = __importStar(require("vscode"));
+const select_1 = __importDefault(require("./voicehandlemodule/select"));
+/* 状态检测 */
+const edite_1 = __importDefault(require("./voicestate/edite"));
+/* 退出检测 */
+const quit_1 = __importDefault(require("./voicestate/quit"));
 /**
  * 语音检测预备流程集合
  */
-const voiceCheckBeforArr = [search_1.default, select_1.default, editctx_1.default];
+const voiceStateArr = [edite_1.default];
+const voiceCheckBeforArr = [
+    search_1.default,
+    select_1.default,
+    editctx_1.default,
+];
+// let state = "";
+let state = {
+    key: "",
+    checkArr: [],
+};
 /**
  * 语音输入检测中心
  */
 const voiceCheckCenter = (word) => {
     // console.log(word);
     vscode.window.setStatusBarMessage(word);
+    if (state.key) {
+        const re = (0, quit_1.default)(word);
+        re ? (re.key === "退出" ? (state = { key: "", checkArr: [] }) : "") : "";
+        for (const item of state.checkArr) {
+            const re = item(word);
+            if (re) {
+                break;
+            }
+        }
+        return 1;
+    }
+    for (const item of voiceStateArr) {
+        const re = item(word);
+        re ? (state = re) : "";
+    }
     for (const item of voiceCheckBeforArr) {
         const sign = item(word);
         if (sign) {
@@ -77,5 +107,5 @@ exports.default = voiceCheckCenter;
  */
 /**
  * 1.目前有一些·预设好的指令处理函数，通过函数内置的关键词来
- */ 
+ */
 //# sourceMappingURL=voicehandle.js.map

@@ -1,11 +1,30 @@
-import editorSelectionCheck from "./voicehandlemodule/select";
+import * as vscode from "vscode";
+
+/* 单句检测 */
 import editorCtxCheck from "./voicehandlemodule/editctx";
 import searchCtxCheck from "./voicehandlemodule/search";
-import * as vscode from "vscode";
+import editorSelectionCheck from "./voicehandlemodule/select";
+
+/* 状态检测 */
+import enterEditeState from "./voicestate/edite";
+
+/* 退出检测 */
+import quitCheck from "./voicestate/quit";
 /**
  * 语音检测预备流程集合
  */
-const voiceCheckBeforArr = [searchCtxCheck,editorSelectionCheck, editorCtxCheck];
+
+const voiceStateArr = [enterEditeState];
+const voiceCheckBeforArr = [
+  searchCtxCheck,
+  editorSelectionCheck,
+  editorCtxCheck,
+];
+// let state = "";
+let state: any = {
+  key: "",
+  checkArr: [],
+};
 
 /**
  * 语音输入检测中心
@@ -13,6 +32,24 @@ const voiceCheckBeforArr = [searchCtxCheck,editorSelectionCheck, editorCtxCheck]
 const voiceCheckCenter = (word: string) => {
   // console.log(word);
   vscode.window.setStatusBarMessage(word);
+
+  if (state.key) {
+    const re: any = quitCheck(word);
+    re ? (re.key === "退出" ? (state = { key: "", checkArr: [] }) : "") : "";
+    for (const item of state.checkArr) {
+      const re = item(word);
+      if (re) {
+        break;
+      }
+    }
+    return 1;
+  }
+
+  for (const item of voiceStateArr) {
+    const re = item(word);
+    re ? (state = re) : "";
+  }
+
   for (const item of voiceCheckBeforArr) {
     const sign: any = item(word);
     if (sign) {

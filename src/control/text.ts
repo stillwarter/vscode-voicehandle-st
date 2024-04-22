@@ -13,6 +13,23 @@ const inserText = (words: any) => {
   });
 };
 
+/* 光标后插入(递归) */
+const inserText_recursion = (wordsArr: any) => {
+  const editor: any = vscode.window.activeTextEditor;
+  const oldCursorPosition = editor.selection.start;
+
+  if (wordsArr.length > 0) {
+    const w = wordsArr.shift();
+    console.log("inserText_recursion", w);
+    editor.edit((editBuilder: any) => {
+      editBuilder.insert(oldCursorPosition, w);
+      setTimeout(() => {
+        inserText_recursion(wordsArr);
+      }, 100);
+    });
+  }
+};
+
 /* 换行 */
 const inserText_newLine = () => {
   const editor: any = vscode.window.activeTextEditor;
@@ -48,8 +65,14 @@ const insertKeySt = (words: any) => {
 
 /* 搜索文件 */
 
-
-export { inserText, inserText_newLine, hidePage, insertNote, insertKeySt };
+export {
+  inserText,
+  inserText_recursion,
+  inserText_newLine,
+  hidePage,
+  insertNote,
+  insertKeySt,
+};
 // activeEditor.edit((editBuilder) => {
 //   // 插入
 //   editBuilder.insert(new vscode.Position(0, 0), "Hello, world!");

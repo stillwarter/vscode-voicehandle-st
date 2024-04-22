@@ -26,7 +26,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertKeySt = exports.insertNote = exports.hidePage = exports.inserText_newLine = exports.inserText = void 0;
+exports.insertKeySt = exports.insertNote = exports.hidePage = exports.inserText_newLine = exports.inserText_recursion = exports.inserText = void 0;
 const vscode = __importStar(require("vscode"));
 /* 光标后插入 */
 const inserText = (words) => {
@@ -37,6 +37,22 @@ const inserText = (words) => {
     });
 };
 exports.inserText = inserText;
+/* 光标后插入(递归) */
+const inserText_recursion = (wordsArr) => {
+    const editor = vscode.window.activeTextEditor;
+    const oldCursorPosition = editor.selection.start;
+    if (wordsArr.length > 0) {
+        const w = wordsArr.shift();
+        console.log("inserText_recursion", w);
+        editor.edit((editBuilder) => {
+            editBuilder.insert(oldCursorPosition, w);
+            setTimeout(() => {
+                inserText_recursion(wordsArr);
+            }, 100);
+        });
+    }
+};
+exports.inserText_recursion = inserText_recursion;
 /* 换行 */
 const inserText_newLine = () => {
     const editor = vscode.window.activeTextEditor;
